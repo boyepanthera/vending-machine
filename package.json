@@ -1,0 +1,20 @@
+{
+  "name": "vending-machine",
+  "version": "1.0.0",
+  "description": "Vending machine api",
+  "main": "server.ts",
+  "repository": "https://github.com/boyepanthera/vending-machine.git",
+  "author": "Olanrewaju A. Olaboye <eyiwumi.olaboye@gmail.com>",
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "build": "tsc"
+  },
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
