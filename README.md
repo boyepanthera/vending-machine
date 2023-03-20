@@ -1,6 +1,6 @@
 # Vending Machine
 
-This project was bootstrapped with Typescript, Nodejs, Express, MySQL and Sequelize by [Olanrewaju A. Olaboye](https://www.github.com/boyepanthera)
+This project was bootstrapped with Typescript, Nodejs, Express, MongoDB and Mongoose by [Olanrewaju A. Olaboye](https://www.github.com/boyepanthera)
 
 ## Scripts
 

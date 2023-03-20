@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "build",
-    "target": "esnext",
-    "strict": true,
-    "noImplicitAny": true,
-    "lib": ["esnext"],
-    "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "moduleResolution": "node"
-  }
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "types/*"]
+    }
+  },
+  "include": ["src/**/*", "src/*", "swagger.ts"]
 }
