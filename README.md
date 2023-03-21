@@ -35,4 +35,4 @@ to run build and create a compiled js version of the project inside the /build f
 
 2. The `product model` : model `models/product.model.ts` is a model schema for products sold on the vending machine.
 
-3. The `deposit mode` : model `models/deposit.model.ts` is a model schema for deposits made by buyers into their vending account.
+3. The `deposit model` : model `models/deposit.model.ts` is a model schema for deposits made by buyers into their vending account.

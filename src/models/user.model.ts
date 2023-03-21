@@ -1,29 +1,38 @@
 import mongoose from "mongoose";
 import Jwt from "jsonwebtoken";
-import crypto from "crypto";
 import Bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import { IProduct } from "./product.model";
 const Schema = mongoose.Schema;
 
-interface IUser {
+export interface IUser {
   _id: string;
   username: string;
   firstName: string;
   lastName: string;
-  email: string;
   password: string;
+  role?: string;
   hashPassword: Function;
+  comparePassword: Function;
+  generateLoginToken: Function;
 }
 
 interface IBuyer extends IUser {
-  deposits: string;
-  depositBalance: number;
+  deposits: string[];
+  deposit: number;
+  role: string;
 }
 
 interface ISeller extends IUser {
   products: IProduct[];
+  role: string;
 }
+
+const baseUserOptions = {
+  discriminatorKey: "__type",
+  collection: "users",
+  timestamps: true,
+};
 
 const userSchema = new Schema<IUser>(
   {
@@ -33,23 +42,31 @@ const userSchema = new Schema<IUser>(
     lastName: { type: String },
     password: { type: String, required: true },
   },
-  { timestamps: true }
+  baseUserOptions
 );
 
 const buyerSchema = new Schema<IBuyer>({
-  deposits: { type: String, ref: "Deposit" },
-  depositBalance: { type: Number },
+  deposits: [{ type: String, ref: "Deposit" }],
+  role: {
+    type: String,
+    default: "buyer",
+  },
+  deposit: { type: Number },
 });
 
 const sellerSchema = new Schema<ISeller>({
   products: [{ type: String, ref: "Product" }],
+  role: {
+    type: String,
+    default: "seller",
+  },
 });
 
-userSchema.methods.generateLoginToken = function generateLoginToken() {
+userSchema.methods.generateLoginToken = function generateLoginToken(): string {
   return generateJwtToken(this);
 };
 
-function generateJwtToken(record: IUser) {
+function generateJwtToken(record: ISeller | IBuyer): string {
   const options = {
     expiresIn: "6h",
     issuer: "vending-hasher",
@@ -57,7 +74,7 @@ function generateJwtToken(record: IUser) {
   return Jwt.sign(
     {
       _id: record._id,
-      email: record.email,
+      role: record.role,
       username: record.username,
     },
     process.env.JWT_SECRET,
@@ -77,15 +94,6 @@ userSchema.methods.comparePassword = comparePassword;
 function comparePassword(plainPassword: string): boolean {
   return Bcrypt.compareSync(plainPassword, this.password);
 }
-
-userSchema.methods.generatePasswordResetToken =
-  function generatePasswordResetToken(): string {
-    const resetToken = crypto.randomBytes(20).toString("hex");
-    this.passwordResetToken = resetToken;
-    this.passwordResetExpiresIn = Date.now() + 900000; //15mins expiration
-    this.save();
-    return resetToken;
-  };
 
 userSchema.pre("save", function (): void {
   if (this.isModified("password")) {
