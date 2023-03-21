@@ -3,7 +3,10 @@ import {
   handleErrorResponse,
   handleSuccessResponse,
 } from "../utils/response/index";
-import { validateCreateUser } from "../utils/validators/user.validators";
+import {
+  validateCreateUser,
+  validateUpdateUser,
+} from "../utils/validators/user.validators";
 import User, { Buyer, Seller } from "../models/user.model";
 import { IAuthRequest } from "./types";
 
@@ -36,7 +39,6 @@ const Create = async (req: Request, res: Response) => {
         {
           token,
           role: userExist.role,
-          profileId: userExist._id,
         },
         200
       );
@@ -54,7 +56,6 @@ const Create = async (req: Request, res: Response) => {
     const responseData = {
       token,
       role: user.role,
-      profileId: user._id,
     };
     return handleSuccessResponse(res, "account created!", responseData, 201);
   } catch (error) {
@@ -80,18 +81,14 @@ const Fetch = async (req: IAuthRequest, res: Response) => {
     return handleErrorResponse(res, "server issues, try again.", 500);
   }
 };
+
 const Update = async (req: IAuthRequest, res: Response) => {
   try {
-    let user = await User.findById(req.user._id).select("-password");
+    let { err, value } = validateUpdateUser(req.body);
+    if (err) return handleErrorResponse(res, err.details[0].message, 400);
+    let user = await User.findByIdAndUpdate(req.user._id, value);
     if (!user) return handleErrorResponse(res, "user not found", 404);
-    return handleSuccessResponse(
-      res,
-      "profile fetched",
-      {
-        user,
-      },
-      200
-    );
+    return handleSuccessResponse(res, "profile updated", value, 200);
   } catch (error) {
     console.log(error.message);
     return handleErrorResponse(res, "server issues, try again", 500);

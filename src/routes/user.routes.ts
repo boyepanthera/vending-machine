@@ -6,6 +6,7 @@ const userModule = express.Router();
 userModule
   .route("/user")
   .post(UserController.Create)
-  .get(CheckIfLoggedIn, UserController.Fetch);
+  .get(CheckIfLoggedIn, UserController.Fetch)
+  .put(CheckIfLoggedIn, UserController.Update);
 
 export default userModule;
