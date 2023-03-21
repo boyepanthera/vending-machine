@@ -58,6 +58,10 @@ export const CheckIfProductOwner = async (
     }
   } catch (err) {
     console.log(err);
-    handleErrorResponse(res, "server issues, try again", 500);
+    handleErrorResponse(
+      res,
+      "server issues authorizing request, try again",
+      500
+    );
   }
 };

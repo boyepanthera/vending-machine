@@ -8,13 +8,13 @@ interface ICreateProduct {
 
 const CreateProductSchema = Joi.object({
   productName: Joi.string().min(2).max(40).required(),
-  amountAvailable: Joi.string().min(2).max(40).required(),
+  amountAvailable: Joi.number().min(0).required(),
   cost: Joi.number().multiple(5).required(),
 });
 
 const UpdateProductSchema = Joi.object({
   productName: Joi.string().min(2).max(40),
-  amountAvailable: Joi.string().min(2).max(40),
+  amountAvailable: Joi.number().min(0),
   cost: Joi.number().multiple(5),
 });
 

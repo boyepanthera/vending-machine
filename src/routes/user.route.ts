@@ -4,7 +4,7 @@ import { CheckIfLoggedIn } from "../controllers/middelwares";
 const userModule = express.Router();
 
 userModule
-  .route("/user")
+  .route("/")
   .post(UserController.Create)
   .get(CheckIfLoggedIn, UserController.Fetch)
   .put(CheckIfLoggedIn, UserController.Update);

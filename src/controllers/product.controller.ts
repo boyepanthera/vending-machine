@@ -22,8 +22,10 @@ const Create = async (req: IAuthRequest, res: Response) => {
   try {
     let { err, value } = validateCreateProduct(req.body);
     if (err) return handleErrorResponse(res, err.details[0].message, 400);
+    if (req.user.role !== "seller")
+      return handleErrorResponse(res, "only sellers can upload products", 403);
     let product = await Product.create({ ...value, sellerId: req.user._id });
-    return handleSuccessResponse(res, "account created!", { product }, 201);
+    return handleSuccessResponse(res, "product  updated!", { product }, 201);
   } catch (error) {
     console.log(error.message);
     return handleErrorResponse(res, "server issues, try again", 500);

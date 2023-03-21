@@ -3,6 +3,7 @@ import Jwt from "jsonwebtoken";
 import Bcrypt from "bcryptjs";
 import { v4 as uuid } from "uuid";
 import { IProduct } from "./product.model";
+import { IDeposit } from "./deposit.model";
 const Schema = mongoose.Schema;
 
 export interface IUser {
@@ -51,7 +52,7 @@ const buyerSchema = new Schema<IBuyer>({
     type: String,
     default: "buyer",
   },
-  deposit: { type: Number },
+  deposit: { type: Number, default: 0 },
 });
 
 const sellerSchema = new Schema<ISeller>({
@@ -61,6 +62,30 @@ const sellerSchema = new Schema<ISeller>({
     default: "seller",
   },
 });
+
+buyerSchema.methods.addDeposit = function (deposit: IDeposit): void {
+  this.deposits.push(deposit._id);
+  this.deposit = this.deposit + deposit.amount;
+  this.save();
+  return;
+};
+
+buyerSchema.methods.removeDeposit = function (deposit: IDeposit): void {
+  let depositToRemove = this.deposits.find(
+    (depositId: string) => depositId === deposit._id
+  );
+
+  this.deposit = this.deposit - depositToRemove.amount;
+  this.save();
+  return;
+};
+
+buyerSchema.methods.resetDeposit = function (): void {
+  this.deposits = [];
+  this.deposit = 0;
+  this.save();
+  return;
+};
 
 userSchema.methods.generateLoginToken = function generateLoginToken(): string {
   return generateJwtToken(this);

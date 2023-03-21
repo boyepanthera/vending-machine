@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import connectDB from "./utils/db.utils";
-import userRoutes from "./routes/user.route";
+import appModule from "./routes/index";
 
 const server = express();
 server.use(express.json());
@@ -12,7 +12,7 @@ server.get("/", (req: Request, res: Response) => {
     .json({ message: "Vending machine here. What do you want to buy?" });
 });
 
-server.use("/api/v1/", userRoutes);
+server.use("/api/v1/", appModule);
 
 server.listen(PORT, () => {
   connectDB().catch(() => console.log("db connection error"));
