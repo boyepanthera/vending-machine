@@ -7,6 +7,7 @@ export interface IProduct {
   productName: string;
   amountAvailable: number;
   sellerId: string;
+  cost: number;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -15,6 +16,7 @@ const productSchema = new Schema<IProduct>(
     productName: { type: String, unique: true, required: true },
     amountAvailable: { type: Number, default: 5 },
     sellerId: { type: String, ref: "Seller" },
+    cost: { type: Number },
   },
   { timestamps: true }
 );

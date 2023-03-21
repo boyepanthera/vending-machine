@@ -1,6 +1,6 @@
 import express from "express";
 import UserController from "../controllers/user.controller";
-import { CheckIfLoggedIn } from "../controllers/middelwares/";
+import { CheckIfLoggedIn } from "../controllers/middelwares";
 const userModule = express.Router();
 
 userModule

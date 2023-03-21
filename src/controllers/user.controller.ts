@@ -97,16 +97,9 @@ const Update = async (req: IAuthRequest, res: Response) => {
 
 const Delete = async (req: IAuthRequest, res: Response) => {
   try {
-    let user = await User.findById(req.user._id).select("-password");
+    let user = await User.findByIdAndDelete(req.user._id);
     if (!user) return handleErrorResponse(res, "user not found", 404);
-    return handleSuccessResponse(
-      res,
-      "profile fetched",
-      {
-        user,
-      },
-      200
-    );
+    return handleSuccessResponse(res, "user account destroyed", null, 200);
   } catch (error) {
     return handleErrorResponse(res, error.message, 500);
   }

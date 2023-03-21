@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import connectDB from "./utils/db.utils";
-import userRoutes from "./routes/user.routes";
+import userRoutes from "./routes/user.route";
 
 const server = express();
 server.use(express.json());

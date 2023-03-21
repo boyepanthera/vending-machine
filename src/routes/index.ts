@@ -1,1 +1,1 @@
-export * as userModule from "./user.routes";
+export * as userModule from "./user.route";
