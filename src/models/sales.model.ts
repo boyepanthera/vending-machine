@@ -7,6 +7,7 @@ export interface ISales {
   product: string;
   buyerId: string;
   amount: number;
+  subTotal: number;
 }
 
 const saleSchema = new Schema<ISales>(
@@ -15,6 +16,7 @@ const saleSchema = new Schema<ISales>(
     product: { type: String, ref: "Product" },
     buyerId: { type: String, ref: "Seller" },
     amount: Number,
+    subTotal: Number,
   },
   { timestamps: true }
 );

@@ -10,6 +10,7 @@ import { Buyer } from "../models/user.model";
 
 interface IDepositController {
   MakeDeposit: RequestHandler;
+  ResetDeposit: RequestHandler;
 }
 
 const MakeDeposit = async (req: IAuthRequest, res: Response) => {
@@ -29,8 +30,24 @@ const MakeDeposit = async (req: IAuthRequest, res: Response) => {
   }
 };
 
+const ResetDeposit = async (req: IAuthRequest, res: Response) => {
+  try {
+    if (req.user.role !== "buyer") {
+      return handleErrorResponse(res, "only buyers can reset deposit", 403);
+    }
+    const depositor = await Buyer.findById(req.user._id);
+    await Deposit.deleteMany({ _id: { $in: depositor.deposits } });
+    depositor.resetDeposit();
+    return handleSuccessResponse(res, "deposit reset", null, 201);
+  } catch (error) {
+    console.log(error.message);
+    return handleErrorResponse(res, "server issues, try again", 500);
+  }
+};
+
 const DepositController: IDepositController = {
   MakeDeposit,
+  ResetDeposit,
 };
 
 export default DepositController;

@@ -11,7 +11,7 @@ export interface IDeposit {
 const depositSchema = new Schema<IDeposit>(
   {
     _id: { type: String, default: uuid },
-    amount: { type: Number, unique: true, required: true },
+    amount: { type: Number, required: true },
     depositor: { type: String },
   },
   { timestamps: true }

@@ -8,6 +8,7 @@ export interface IProduct {
   amountAvailable: number;
   sellerId: string;
   cost: number;
+  deductQuantity: Function;
 }
 
 const productSchema = new Schema<IProduct>(
@@ -20,6 +21,12 @@ const productSchema = new Schema<IProduct>(
   },
   { timestamps: true }
 );
+
+productSchema.methods.deductQuantity = function (quantity: number): void {
+  this.amountAvailable = this.amountAvailable - quantity;
+  this.save();
+  return;
+};
 
 const Product = mongoose.model<IProduct>("Product", productSchema);
 export default Product;

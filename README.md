@@ -2,6 +2,8 @@
 
 This project was bootstrapped with Typescript, Nodejs, Express, MongoDB and Mongoose by [Olanrewaju A. Olaboye](https://www.github.com/boyepanthera)
 
+Documentation Available on [Postman](https://documenter.getpostman.com/view/13086801/2s93RL2GnE)
+
 ## Scripts
 
 ### `yarn install`
@@ -15,6 +17,10 @@ to run the development version of the project
 ### `yarn build`
 
 to run build and create a compiled js version of the project inside the /build folder
+
+### `yarn test`
+
+to run the written tests
 
 ## How to Collaborate
 
@@ -36,3 +42,5 @@ to run build and create a compiled js version of the project inside the /build f
 2. The `product model` : model `models/product.model.ts` is a model schema for products sold on the vending machine.
 
 3. The `deposit model` : model `models/deposit.model.ts` is a model schema for deposits made by buyers into their vending account.
+4.
+5. The `sales model` : model `models/sales.model.ts` is a model schema for keeping record of sales made by buyers from the vending machines.

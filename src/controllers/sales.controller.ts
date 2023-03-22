@@ -4,7 +4,6 @@ import {
   handleErrorResponse,
   handleSuccessResponse,
 } from "../utils/response/index";
-import Deposit from "../models/deposit.model";
 import { IAuthRequest } from "./types";
 import { Buyer } from "../models/user.model";
 import Sale from "../models/sales.model";
@@ -25,9 +24,30 @@ const Buy = async (req: IAuthRequest, res: Response) => {
     if (!product) {
       return handleErrorResponse(res, "product not found", 404);
     }
+    if (product.amountAvailable < value.amount) {
+      return handleErrorResponse(
+        res,
+        `not enough product in stock. ${product.amountAvailable} remaining`,
+        404
+      );
+    }
     const depositor = await Buyer.findById(req.user._id);
-    depositor.deductDeposit(value.amount * product.cost);
-    const sales = await Sale.create(value);
+    const amountDue = value.amount * product.cost;
+    if (amountDue > depositor.deposit) {
+      return handleErrorResponse(
+        res,
+        "insufficient wallet balance make more deposit",
+        403
+      );
+    }
+    depositor.deductFromDeposit(amountDue);
+    product.deductQuantity(value.amount);
+    const sales = await Sale.create({
+      buyerId: req.user._id,
+      product: value.productId,
+      amount: value.amount,
+      subTotal: amountDue,
+    });
     return handleSuccessResponse(
       res,
       "product purchased!",

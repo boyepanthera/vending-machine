@@ -7,6 +7,7 @@ userModule
   .route("/")
   .post(UserController.Create)
   .get(CheckIfLoggedIn, UserController.Fetch)
-  .put(CheckIfLoggedIn, UserController.Update);
+  .put(CheckIfLoggedIn, UserController.Update)
+  .delete(CheckIfLoggedIn, UserController.Delete);
 
 export default userModule;
