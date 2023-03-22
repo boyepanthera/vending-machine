@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import connectDB from "./utils/db.utils";
 import appModule from "./routes/index";
 
-const server = express();
+export const server = express();
 server.use(express.json());
 const PORT = process.env.PORT || 3005;
 
