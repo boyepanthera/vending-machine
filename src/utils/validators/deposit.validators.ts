@@ -5,7 +5,7 @@ interface IMakeDeposit {
 }
 
 const MakeDepositSchema = Joi.object({
-  amount: Joi.number().min(1).required(),
+  amount: Joi.number().min(5).valid(5, 10, 20, 50, 100).required(),
 });
 
 export const validateMakeDeposit = (data: IMakeDeposit) => {

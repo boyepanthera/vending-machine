@@ -14,6 +14,9 @@ interface IDepositController {
 
 const MakeDeposit = async (req: IAuthRequest, res: Response) => {
   try {
+    if (req.user.role !== "buyer") {
+      return handleErrorResponse(res, "only buyers can make deposit", 403);
+    }
     let { err, value } = validateMakeDeposit(req.body);
     if (err) return handleErrorResponse(res, err.details[0].message, 400);
     const depositor = await Buyer.findById(req.user._id);

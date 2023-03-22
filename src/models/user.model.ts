@@ -71,12 +71,19 @@ buyerSchema.methods.addDeposit = function (deposit: IDeposit): void {
 };
 
 buyerSchema.methods.removeDeposit = function (deposit: IDeposit): void {
-  let depositToRemove = this.deposits.find(
+  // find index of the depositId to remove
+  let depositToRemoveIndex = this.deposits.findIndex(
     (depositId: string) => depositId === deposit._id
   );
 
-  this.deposit = this.deposit - depositToRemove.amount;
-  this.save();
+  // remove the depositId from deposits array using the index and deduct its amount from deposit balance
+  if (depositToRemoveIndex > -1) {
+    let depositToRemove = this.deposits[depositToRemoveIndex];
+    this.deposits.splice(depositToRemoveIndex, 1);
+    this.deposit = this.deposit - depositToRemove.amount;
+    this.save();
+  }
+
   return;
 };
 
