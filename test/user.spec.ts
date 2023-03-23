@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 //   this.retries(2);
 // });
 
-describe("/POST user", () => {
+describe("/Test User CRUD, Buy and Deposit", () => {
   let buyerToken;
   let sellerToken;
   let productToBuy;
